@@ -5,7 +5,7 @@ This project focuses on analyzing healthcare data to identify patient health tre
 The healthcare dataset consists of three tables: Customer Names, Medical Examinations, and Hospitalisation Details, containing information on 2,335 customers. It includes customer profiles, medical conditions, health examination results, hospitalisation records, and healthcare expenses. These tables are linked through Customer ID, enabling comprehensive analysis of patient health profiles, medical histories, hospitalisation trends, and healthcare costs.
 It contains three worksheets (tables), each representing a different aspect of healthcare information.
 The three tables can be connected using the common Customer ID column to perform combined analysis.
-1. Customer Names
+###1. Customer Names
 2,335 rows · 2 columns
 Purpose: This table contains the basic customer information. It helps identify individual customers and link their details with medical examination and hospitalisation records.
 Column	Description	Data values
@@ -17,7 +17,7 @@ Brief summary of data:
 •	All customer names are unique.
 •	No missing values were identified.
 Analysis opportunity: This table can be used to identify customers and connect their personal information with their medical and hospitalisation details.
-2. Medical Examinations
+###2. Medical Examinations
 2,335 rows · 8 columns
 Purpose: This table contains customers' medical examination results, health conditions, medical histories, and lifestyle information. It helps analyse patient health profiles and identify potential health risks.
 Column	Description	Data values
@@ -43,14 +43,9 @@ No major surgery	1,074
 3 major surgeries	22
 Non-smokers	1,845
 Smokers	488
-Unknown smoking status (?)	2
-Numerical data summary:
-•	Average BMI: 30.97
-•	Average HbA1c: 6.58
-•	Minimum BMI: 15.01; maximum BMI: 55.05.
-•	Minimum HbA1c: 4.00; maximum HbA1c: 12.00.
+
 Analysis opportunity: This table can be used to analyse health conditions, smoking habits, surgery history, BMI distribution, and HbA1c levels among customers.
-3. Hospitalisation Details
+###3. Hospitalisation Details
 2,343 rows · 9 columns
 Purpose: This table contains customer hospitalisation records, including admission dates, number of children, medical expenses, hospital categories, city categories, and state information. It helps analyse healthcare costs and hospitalisation trends.
 Column	Description	Data values
