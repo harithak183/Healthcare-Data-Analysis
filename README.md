@@ -124,3 +124,172 @@ appropriate strategy.
 6. Filled the formula down for all records, then copied the results and pasted them as values.
 
 
+3.Data Transformation
+1) Split the ‘names’ column in the “Customer Names” Table into 3 meaningful columns: 
+‘Title’, ‘First Name’, and ‘Last Name’. 
+
+**Expected Name Format:**
+
+The original Names column follows this format:
+
+`Last Name, Title. First Name`
+
+Example: `Hawks, Mr. John`
+
+**Steps:**
+
+1. In the **Customer Names** table, created three new columns: **Title**, **First Name**, and **Last Name**.
+
+2. Extracted the title (Mr, Mrs, Ms, etc.) using the following formula:
+
+   `=LEFT(TRIM(MID(B2,FIND(",",B2)+1,LEN(B2))),FIND(".",TRIM(MID(B2,FIND(",",B2)+1,LEN(B2))))-1)`
+
+3. Extracted the first name using the following formula:
+
+  '=TRIM(LEFT(TRIM(RIGHT(B2,LEN(B2)-FIND(".",B2))),FIND(" ",TRIM(RIGHT(B2,LEN(B2)-FIND(".",B2)))&" ")-1))'
+
+4. Extracted the last name using the following formula:
+
+   `=LEFT(B2,FIND(",",B2)-1)`
+
+5. Applied each formula to the remaining records by dragging the fill handle down.
+
+6. Verified the extracted values to ensure that the Title, First Name, and Last Name were placed in their respective columns.
+
+**Expected Output:**
+
+| Original Name | Title | First Name | Last Name |
+|---|---|---|---|
+| Hawks, Mr. John | Mr | John | Hawks |
+
+2)Convert the "NumberOfMajorSurgeries" column in the “Medical Examinations” Table to numerical data by replacing non-numeric characters with meaningful numerical values. 
+
+**Steps:**
+
+1. Insert a new column named `NumberOfMajorSurgeries_Cleaned` next to the original column.
+2. Enter the following IF formula in the first data row:
+
+   ```excel
+   =IF(G2="No major surgery",0,VALUE(G2))
+   ```
+3. Press Enter to apply the formula.
+4. Drag the fill handle down to apply the formula to all remaining rows.
+5. Verify that:
+   - `No major surgery` is converted to `0`.
+   - Existing numerical values (1.00, 2.00, 3.00) are retained as numbers.
+6. Copy the cleaned column.
+7. Use **Paste Special → Values** to replace the formulas with their calculated values.
+
+**Result:** The `NumberOfMajorSurgeries` column is converted into numerical data, with `No major surgery` replaced by `0` using the IF function.
+
+3)Check for inconsistencies in the 'Heart Issues' and 'smoker' columns and propose 
+corrective actions if necessary.
+steps
+
+1. Used the `PROPER` function to standardize the text formatting in the **Heart Issues** and **Smoker** columns.
+2. Applied the following formula to the Heart Issues column:`=PROPER(A2)`
+3. Applied the following formula to the Smoker column:`=PROPER(B2)`
+4. Dragged the formulas down to apply them to all records.
+5. Reviewed the standardized values to identify inconsistencies in capitalization, such as `YES`, `yes`, and `Yes`.
+6. Replaced the original values with the corrected, consistently formatted values using Copy and Paste Values.
+7. Verified the columns to ensure consistent text formatting.
+
+4) Create a new column named “Weight Status” that categorizes BMI into different 
+categories as below:  
+BMI 
+Weight Status 
+Below 18.5 -Underweight 
+18.5 – 24.9 - Normal Weight 
+25.0 – 29.9  - Overweight
+30.0 and Above Obesity 
+
+steps
+
+1. Created a new column named **Weight Status** in the Medical Examinations table.
+2. Used nested `IF` conditions to categorize BMI values into four weight-status categories based on the specified BMI ranges.
+3. Entered the following formula, assuming the BMI value is in cell `M3`:
+ `=IF(M3<18.5,"Underweight",IF(M3<25,"Normal Weight",IF(M3<30,"Overweight","Obesity")))`
+4. Applied the formula to all records by dragging the fill handle down.
+5. Verified the categorized results against the specified BMI ranges.
+
+**BMI Classification:**
+
+| BMI Range      | Weight Status |
+| -------------- | ------------- |
+| Below 18.5     | Underweight   |
+| 18.5 – 24.9    | Normal Weight |
+| 25.0 – 29.9    | Overweight    |
+| 30.0 and above | Obesity       |
+
+**Result:** The new `Weight Status` column categorizes each customer's BMI into the appropriate weight-status category.
+
+5)Create a new column named “Diabetes Status” and fill it as per the information given 
+below:  
+HbA1C 
+Diabetes Status 
+Below 5.7 Normal
+5.7 – 6.4 Prediabetes 
+6.5 and Above Diabetes 
+
+steps
+
+1. Created a new column named **Diabetes Status** in the Medical Examinations table.
+2. Used nested `IF` conditions to categorize HbA1C values into three categories based on the specified ranges.
+3. Entered the following formula, assuming the HbA1C value is in cell `O3`:`=IF(O3="","",IF(O3<5.7,"Normal",IF(O3<6.5,"Prediabetes","Diabetes")))`
+4. Applied the formula to all records by dragging the fill handle down.
+5. Verified the results against the specified HbA1C ranges.
+6. Kept the Diabetes Status cell blank when the corresponding HbA1C value was missing.
+**HbA1C Classification:**
+
+| HbA1C Range | Diabetes Status |
+|---|---|
+| Below 5.7 | Normal |
+| 5.7 – Below 6.5 | Prediabetes |
+| 6.5 and Above | Diabetes |
+
+6).Merge ‘year’, ‘month’ and ‘date’ columns in the “Hospitalization Details” Table into one 
+column named ‘Date of Birth’ and format it in ‘DD-MMM-YYYY’ custom format. 
+###  Combining Year, Month, and Date into Date of Birth
+
+1. In the **Hospitalization Details** table, created a new column named **Date of Birth**.
+2. Combined the existing `year`, `month`, and `date` columns into a single date value.
+3. Since the month column contained text values (e.g., `Sep`), used the `DATE`, `DATEVALUE`, and `MONTH` functions to convert the month name into its corresponding numerical value.
+4. Entered the following formula, assuming:
+   - `Z3` contains the year.
+   - `AA3` contains the month.
+   - `AB3` contains the date.
+`=DATE(VALUE(Z3),MONTH(DATEVALUE("1 "&AA3&" 2000")),VALUE(AB3))`
+
+5. Applied the formula to all records by dragging the fill handle down.
+6. Selected the **Date of Birth** column and applied the custom date format `DD-MMM-YYYY`.
+7. Verified the resulting dates to ensure that the year, month, and date were combined correctly.
+
+**Result:** The separate year, month, and date values were merged into a single Date of Birth column and displayed in the `DD-MMM-YYYY` format.
+
+ 7).Calculate the ‘Age’ of each customer based on their ‘Date of Birth’ and the date of 
+collection of the dataset, which is 8thJune 2023. 
+### . Calculating Customer Age
+
+1. Created a new column named **Age** in the Hospitalization Details table.
+2. Calculated the age of each customer based on their **Date of Birth**, using the dataset collection date, **8th June 2023**, as the reference date.
+3. Entered the following formula, assuming `AH3` contains the customer's Date of Birth:
+`=2023-YEAR(AH3)`
+4. Applied the formula to all records by dragging the fill handle down.
+5. Verified the calculated ages to ensure that the results were based on the year of birth and the dataset collection year.
+
+**Result:** The Age column contains the calculated age of each customer based on the dataset collection year (2023).
+
+8)Format ‘charges’ column as currency ($). 
+### . Formatting the Charges Column as Currency
+
+1. Selected the **Charges** column in the Hospitalization Details worksheet.
+2. Navigated to the **Home** tab and opened the **Number Format** dropdown in the Number group.
+3. Changed the existing **General** format to **Currency**.
+4. Selected the US Dollar (`$`) currency symbol.
+5. Set the decimal places to 2.
+6. Verified that all charge values were displayed in the `$` currency format.
+
+**Result:** The Charges column was successfully formatted as US Dollar currency (`$`) with two decimal places.
+
+
+
