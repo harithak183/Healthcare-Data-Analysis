@@ -1,89 +1,109 @@
  Healthcare-Data-Analysis
 # 1.Problem Statement
 This project focuses on analyzing healthcare data to identify patient health trends, medical histories, hospitalization patterns, and healthcare costs. It involves data cleaning, transformation, exploration, and visualization to generate meaningful insights that support informed decision-making and improve healthcare management.
-## 2.Dataset Description
-The healthcare dataset consists of three tables: Customer Names, Medical Examinations, and Hospitalisation Details, containing information on 2,335 customers. It includes customer profiles, medical conditions, health examination results, hospitalisation records, and healthcare expenses. These tables are linked through Customer ID, enabling comprehensive analysis of patient health profiles, medical histories, hospitalisation trends, and healthcare costs.
-It contains three worksheets (tables), each representing a different aspect of healthcare information.
-The three tables can be connected using the common Customer ID column to perform combined analysis.
-1.1 Customer Names
-2,335 rows · 2 columns
-Purpose: This table contains the basic customer information. It helps identify individual customers and link their details with medical examination and hospitalisation records.
-Column	Description	Data values
-Customer ID	Unique identifier assigned to each customer	Id1, Id2, Id3, etc.
-name	Customer's name	Full names with titles such as Mr. and Ms.
-Brief summary of data:
-•	Contains 2,335 customer records.
-•	All 2,335 Customer IDs are unique.
-•	All customer names are unique.
-•	No missing values were identified.
-Analysis opportunity: This table can be used to identify customers and connect their personal information with their medical and hospitalisation details.
-1.2 Medical Examinations
-2,335 rows · 8 columns
-Purpose: This table contains customers' medical examination results, health conditions, medical histories, and lifestyle information. It helps analyse patient health profiles and identify potential health risks.
-Column	Description	Data values
-Customer ID	Unique customer identifier	Id1, Id2, Id3, etc.
-BMI	Body Mass Index, indicating body weight relative to height	15.01 – 55.05
-HBA1C	HbA1c measurement used to assess average blood glucose levels	4.00 – 12.00
-Heart Issues	Indicates whether the customer has heart-related health issues	Yes / No
-Any Transplants	Indicates whether the customer has undergone an organ transplant	Yes / No
-Cancer history	Indicates whether the customer has a history of cancer	Yes / No
-NumberOfMajorSurgeries	Number of major surgeries undergone	No major surgery, 1, 2, 3
-smoker	Indicates the customer's smoking status	Yes / No / ?
-Brief summary of data values:
-Medical attribute	Data distribution
-Heart Issues – No	1,409
-Heart Issues – Yes	926
-Transplants – No	2,191
-Transplants – Yes	144
-Cancer history – No	1,944
-Cancer history – Yes	391
-No major surgery	1,074
-1 major surgery	965
-2 major surgeries	274
-3 major surgeries	22
-Non-smokers	1,845
-Smokers	488
+## ## 2. Dataset Description
 
-Analysis opportunity: This table can be used to analyse health conditions, smoking habits, surgery history, BMI distribution, and HbA1c levels among customers.
-1.3 Hospitalisation Details
-2,343 rows · 9 columns
-Purpose: This table contains customer hospitalisation records, including admission dates, number of children, medical expenses, hospital categories, city categories, and state information. It helps analyse healthcare costs and hospitalisation trends.
-Column	Description	Data values
-Customer ID	Customer identifier used to connect records	Id1, Id2, Id3, etc.
-year	Year associated with the hospitalisation record	Year values
-month	Month associated with the hospitalisation record	Jan, Feb, Mar, etc.
-date	Day of the month	1–30
-children	Number of children associated with the customer	0–5
-charges	Healthcare expenses incurred by the customer	563.84 – 63,770.43
-Hospital tier	Classification of the hospital based on its tier	Tier 1, Tier 2, Tier 3
-City tier	Classification of the city based on its tier	Tier 1, Tier 2, Tier 3
-State ID	Unique code representing the state	R1011, R1012, R1013, etc.
-Brief summary of data values:
-Attribute	Data distribution
-Hospital Tier 1	309
-Hospital Tier 2	1,339
-Hospital Tier 3	694
-City Tier 1	734
-City Tier 2	812
-City Tier 3	796
-Customers with 0 children	
-Numerical data summary:
-Column	Average	Minimum	Maximum
-Children	1.03	0	5
-Charges	13,559.07	563.84	63,770.43
-Date	15.55	1	30
-Additional observations:
-•	September has the highest number of records (369).
-•	The dataset contains 17 distinct State ID values.
-•	Hospital Tier 2 has the highest number of records (1,339).
-•	The median healthcare charge is 9,634.54.
-Analysis opportunity: This table can be used to analyse healthcare expenses, hospitalisation patterns, city and hospital tier distributions, and regional healthcare trends.
-1.4. Overall Dataset Summary
-Worksheet	Rows	Columns	Main purpose
-Customer Names	2,335	2	Customer identification
-Medical Examinations	2,335	8	Patient health information
-Hospitalisation Details	2,343	9	Hospitalisation and expenses
-Total	7,013	19	Healthcare analysis
+The healthcare dataset contains **three related tables with 2,335 customer records**, covering customer information, medical examinations, and hospitalisation details. The tables are linked through the common **Customer ID** column, enabling comprehensive analysis of patient health conditions, medical history, hospitalisation patterns, and healthcare expenses.
 
+### 1.2 Dataset Structure
+
+| Worksheet | Rows | Columns | Description |
+|---|---:|---:|---|
+| Customer Names | 2,335 | 2 | Customer identification and names |
+| Medical Examinations | 2,335 | 8 | Health conditions, examination results, and medical history |
+| Hospitalisation Details | 2,343 | 9 | Hospitalisation records, hospital tiers, and healthcare charges |
+| **Total** | **7,013** | **19** | **Combined healthcare dataset** |
+
+### Key Data Attributes
+
+- **Customer Information:** Customer IDs and names.
+- **Medical Information:** BMI, HbA1c, heart issues, transplant history, cancer history, major surgeries, and smoking status.
+- **Hospitalisation Information:** Admission dates, number of children, healthcare charges, hospital tiers, city tiers, and state IDs.
+
+### Data Overview
+
+- All 2,335 Customer IDs in the Customer Names and Medical Examinations tables are unique.
+- The Medical Examinations table contains information on smoking habits, medical conditions, and surgery history.
+- The Hospitalisation Details table contains 2,343 records, indicating that some customers may have multiple hospitalisation records.
+- Hospital Tier 2 has the highest number of records (1,339).
+- Healthcare charges range from ₹563.84 to ₹63,770.43.
+
+### Analysis Objectives
+
+The dataset supports analysis of:
+- Patient health conditions and medical history.
+- Smoking habits and their relationship with cancer history.
+- BMI, HbA1c, and age-related health trends.
+- Hospitalisation patterns across hospital and city tiers.
+- Healthcare expenses and variations across patient groups.
+
+### 1.3 Data Preprocessing
+a) Check for the number of missing values marked with '?' in each column of the “Medical 
+Examinations” Table and "Hospitalization Details" Table.  
+
+
+The `COUNTIF` function was used to identify and count the missing values represented by `?` in each column of the **Medical Examinations** and **Hospitalisation Details** tables.
+
+**Formula used:**
+```excel
+=COUNTIF(A2:A2344,"~?")
+```
+The tilde (`~`) was used as an escape character to treat `?` as a literal character rather than a wildcard.
+
+**Results:**
+
+- **Hospitalisation Details:** Missing values were identified in the respective columns, with counts of `6, 2, 3, 0, 0, 0, 1, 1, 2`.
+- **Medical Examinations:** Missing values were identified in the respective columns, with counts of `0, 0, 0, 0, 0, 0, 0, 2`.
+
+These results indicate that the Hospitalisation Details table contains missing values across multiple columns, while the Medical Examinations table contains missing values in only one column (2 occurrences).
+
+
+b)Fill in the missing values of ‘month’ with Sep and ‘year’ with its average rounded to the 
+nearest integer.  
+
+Steps:
+for month
+1. Insert a temporary column next to Month.
+2. Enter the formula in the first data row.
+3. Drag the formula down to all records.
+4. Copy the resulting values.
+5. Use Paste Special → Values to replace the original Month column.
+
+for year
+1.Calculate the average of the available values in the Year column using the AVERAGE() function.
+2.Apply the ROUND() function to round the calculated average to the nearest integer.
+3.Replace missing values in the Year column with the rounded average.
+
+
+c)Determine the most frequently occurring values in the ‘smoker’, 'Hospital tier' and 'City 
+tier' columns, and fill in the missing values accordingly. 
+
+**Objective:** Identify the most frequently occurring value in the `Smoker`, `Hospital Tier`, and `City Tier` columns and replace missing values with the respective most frequent value.
+
+**steps:**
+
+1. Use the `COUNTIF` function to calculate the frequency of each category in the respective columns.
+
+   **Smoker:**
+  =COUNTIF(H2:H2336,"yes")
+
+   **Hospital Tier:**
+  =COUNTIF(W2:W2344,"tier - 3")
+  =COUNTIF(W2:W2344,"tier - 2")
+  =COUNTIF(W2:W2344,"tier - 1")
+
+   **City Tier:**
+  =COUNTIF(X2:X2344,"tier - 3")
+  =COUNTIF(X2:X2344,"tier - 1")
+  =COUNTIF(X2:X2344,"tier - 2")
+
+2. Compare the counts for each category and identify the value with the highest frequency (Mode).
+3. Use the `IF` function to replace missing values with the identified Mode while retaining existing values.
+4. Replace `"tier - 3/tier - 2/tier - 1"`Most Frequent Value in each formula with the actual Mode identified using `COUNTIF`.
+5. Drag the formulas down to apply them to all records.
+6. Copy the resulting columns and use **Paste Special → Values** to update the original data if required.
+
+**Result:** Missing values in the three columns are replaced with their respective most frequently occurring values, while existing values remain unchanged.
+      
 
 
