@@ -291,5 +291,364 @@ collection of the dataset, which is 8thJune 2023.
 
 **Result:** The Charges column was successfully formatted as US Dollar currency (`$`) with two decimal places.
 
+4.Exploratory Data Analysis
+Create a new sheet named “Healthcare", combine all three tables into one, using 
+Customer ID as the common column, utilizing VLOOKUP. 
+
+### 4.1. Combining the Three Tables Using VLOOKUP
+
+1. Created a new worksheet named **Healthcare** in the Excel workbook.
+2. Used **Customer ID** as the common column to combine data from the three existing tables:
+   - Customer Names
+   - Medical Examinations
+   - Hospitalisation Details
+3. Retained **Customer ID** as the first column in the new Healthcare worksheet.
+4. Used the `VLOOKUP` function with an exact match (`0`) to retrieve the required information from the respective worksheets.
+
+**VLOOKUP formulas used:**
+
+**Customer Names table:**
+- `=VLOOKUP(A2,'Customer Names'!A:D,4,0)` – First Name
+- `=VLOOKUP(A2,'Customer Names'!A:E,5,0)` – Last Name
+
+**Medical Examinations table:**
+- `=VLOOKUP(A2,'Medical Examinations'!A:B,2,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:D,4,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:F,6,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:G,7,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:H,8,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:I,9,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:J,10,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:C,3,0)`
+- `=VLOOKUP(A2,'Medical Examinations'!A:E,5,0)`
+
+**Hospitalisation Details table:**
+- `=VLOOKUP(A2,'Hospitalisation Details'!A:J,10,0)`
+- `=VLOOKUP(A2,'Hospitalisation Details'!A:F,6,0)`
+- `=VLOOKUP(A2,'Hospitalisation Details'!A:G,7,0)`
+- `=VLOOKUP(A2,'Hospitalisation Details'!A:H,8,0)`
+- `=VLOOKUP(A2,'Hospitalisation Details'!A:I,9,0)`
+- `=VLOOKUP(A2,'Hospitalisation Details'!A:K,11,0)`
+
+5. Used the appropriate column index in each formula to retrieve the required field from its source worksheet.
+6. Applied the formulas to all customer records by dragging the fill handle down.
+7. Retained the following required columns in the combined Healthcare table:
+
+   - Customer ID
+   - First Name
+   - BMI
+   - HBA1C
+   - Heart Issues
+   - Any Transplants
+   - Cancer History
+   - NumberOfMajorSurgeries
+   - Smoker
+   - Weight Status
+   - Diabetes Status
+   - Date of Birth
+   - Charges
+   - Hospital Tier
+   - City Tier
+   - State ID
+   - Age
+
+8. Verified the retrieved values against the original worksheets to ensure that the records were correctly matched using Customer ID.
+
+**Result:** Successfully combined the required information from the three worksheets into a single **Healthcare** table using Customer ID as the common column and VLOOKUP with exact-match lookup.
+
+4.2 Analysis using Pie/Donut Chart
+1) What is the distribution of cancer history among smokers and non-smokers? 
+### Distribution of Cancer History Among Smokers and Non-Smokers
+
+**Step 1: Creating a PivotTable**
+
+1. Opened the **Healthcare** worksheet containing the combined healthcare dataset.
+2. Selected any cell within the dataset.
+3. Navigated to the **Insert** tab in Excel for the Web.
+4. Clicked **PivotTable**.
+5. Selected the complete dataset as the source.
+6. Chose **New Worksheet** and clicked **Create**.
+7. Renamed the new worksheet to **Cancer History Analysis**.
+
+**Step 2: Naming the PivotTable**
+
+1. Selected any cell inside the PivotTable.
+2. Navigated to the **PivotTable** tab.
+3. Located the **PivotTable Name** field.
+4. Entered the name `Pivot_Cancer_History` and pressed Enter.
+
+**Step 3: Configuring PivotTable Fields**
+
+1. In the PivotTable Fields pane, dragged the following fields into their respective areas:
+   - **Rows:** Smoker
+   - **Columns:** Cancer History
+   - **Values:** Customer ID
+2. Opened the Customer ID value field settings and selected **Count** to calculate the number of customers in each category.
+3. Verified the PivotTable results to ensure that cancer history was distributed between smokers and non-smokers.
+
+**Step 4: Creating a Pie Chart**
+
+1. Selected the PivotTable results.
+2. Navigated to the **Insert** tab.
+3. Selected **Pie Chart** from the chart options.
+4. Added the chart title: **Distribution of Cancer History Among Smokers and Non-Smokers**.
+5. Verified the chart legend and data labels to ensure that the cancer history categories were clearly represented.
+
+**Result:** Created a named PivotTable (`Pivot_Cancer_History`) and Pie Chart to analyze and visualize the distribution of cancer history among smokers and non-smokers based on the count of Customer IDs.
+
+
+### Analysis: Major Surgeries and Average HbA1C by Transplant History
+
+**Objective:** To compare the total number of major surgeries and the average HbA1C levels between patients with and without a history of transplants.
+
+2)How does the total number of major surgeries and average HbA1C differ between patients with and without a history of transplants? 
+
+**Steps Performed:**
+
+**Step 1: Creating a PivotTable**
+1. Selected the Healthcare dataset.
+2. Navigated to **Insert → PivotTable**.
+3. Selected **New Worksheet** and created the PivotTable.
+4. Renamed the worksheet to `Transplant Analysis`.
+
+**Step 2: Configuring PivotTable Fields**
+1. Dragged **Any Transplants** to the Rows area.
+2. Dragged **NumberOfMajorSurgeries** to the Values area.
+3. Changed the summarisation method to **Sum** to calculate the total number of major surgeries.
+4. Dragged **HBA1C** to the Values area.
+5. Changed the summarisation method to **Average** to calculate the average HbA1C level.
+6. Verified that the PivotTable displayed separate results for patients with and without a history of transplants.
+
+**Step 3: Creating a Chart**
+1. Selected the PivotTable data.
+2. Navigated to **Insert → Chart**.
+3. Selected a suitable chart type to visualise the comparison.
+4. Added an appropriate chart title and data labels.
+5. Verified that the chart represented both transplant groups and the two calculated measures.
+
+4.3 Analysis using Column/Bar Chart:
+1) How do healthcare charges vary based on different weight statuses and diabetes statuses? 
+### Analysis: Healthcare Charges by Weight Status and Diabetes Status
+
+**Objective:** To analyse how healthcare charges vary among patients with different weight statuses and diabetes statuses.
+
+**Steps Performed:**
+
+**Step 1: Creating a PivotTable**
+1. Selected the Healthcare dataset.
+2. Navigated to **Insert → PivotTable**.
+3. Selected **New Worksheet** and created the PivotTable.
+4. Renamed the worksheet to `Charges Analysis`.
+
+**Step 2: Configuring PivotTable Fields**
+1. Dragged **Weight Status** to the Rows area.
+2. Dragged **Diabetes Status** to the Columns area.
+3. Dragged **Charges** to the Values area.
+4. Changed the summarisation method to **Sum** to calculate the total healthcare charges.
+5. Verified that the PivotTable displayed total charges for each combination of weight status and diabetes status.
+
+**Step 3: Creating a Bar Chart**
+1. Selected the PivotTable data.
+2. Navigated to **Insert → Chart**.
+3. Selected **Bar Chart** to visualise the comparison.
+4. Added an appropriate chart title: `Healthcare Charges by Weight Status and Diabetes Status`.
+5. Added data labels to display the charge values.
+6. Verified that the chart clearly represented the differences in healthcare charges across the categories.
+Observations:
+
+Patients in the Obesity category also include individuals with Normal diabetes status.
+
+The number of patients with Normal diabetes status is higher than the number of patients with Diabetes status in the Obesity category.
+
+The number of patients in the Underweight category is comparatively lower than in the Normal Weight, Overweight, and Obesity categories.
+
+Healthcare charges vary across different combinations of weight status and diabetes status.
+
+ 2) Can you compare the average charges for each hospital tier within different states?
+### Analysis: Average Healthcare Charges by Hospital Tier and State
+
+**Objective:** To compare the average healthcare charges across different hospital tiers within different states.
+
+**Steps Performed:**
+
+**Step 1: Creating a PivotTable**
+1. Selected the Healthcare dataset.
+2. Navigated to **Insert → PivotTable**.
+3. Selected **New Worksheet** and created the PivotTable.
+4. Renamed the worksheet to `Hospital Tier Analysis`.
+
+**Step 2: Configuring PivotTable Fields**
+1. Dragged **State ID** to the Rows area.
+2. Dragged **Hospital Tier** to the Columns area.
+3. Dragged **Charges** to the Values area.
+4. Changed the summarisation method from **Sum** to **Average** to calculate the average healthcare charges.
+5. Verified that the PivotTable displayed the average charges for each hospital tier within each state.
+
+**Step 3: Creating a Bar Chart**
+1. Selected the PivotTable data.
+2. Navigated to **Insert → Chart**.
+3. Selected **Bar Chart** to visualise the comparison.
+4. Added an appropriate chart title: `Average Healthcare Charges by Hospital Tier and State`.
+5. Added data labels to display the average charge values.
+6. Verified that the chart clearly represented the differences in average healthcare charges across hospital tiers and states.
+
+ 3.Is there any correlation between age and both BMI and HbA1C in the dataset? 
+ ### Analysis: Correlation Between Age, BMI and HbA1C
+
+**Objective:** To identify whether there is any relationship between patient age and their BMI and HbA1C levels.
+
+**Steps Performed:**
+
+**Step 1: Selecting the Data**
+1. Opened the `Healthcare` worksheet.
+2. Selected the **Age**, **BMI**, and **HBA1C** columns from the dataset.
+
+**Step 2: Creating a Scatter Chart**
+1. Navigated to **Insert → Chart**.
+2. Selected **Scatter Chart** to visualise the relationship between the variables.
+3. Configured the first data series:
+   - **Series Name:** BMI
+   - **X-axis Values:** Age column
+   - **Y-axis Values:** BMI column
+4. Added a second data series to the same chart:
+   - **Series Name:** HBA1C
+   - **X-axis Values:** Age column
+   - **Y-axis Values:** HBA1C column
+5. Used the Age column as the X-axis for both data series.
+
+**Step 3: Formatting the Chart**
+1. Added the chart title: `Relationship Between Age, BMI and HbA1C`.
+2. Added axis titles:
+   - **X-axis:** Age
+   - **Y-axis:** BMI and HbA1C
+3. Displayed the legend to distinguish the BMI and HbA1C data series.
+4. Verified that both series were plotted against the same Age values.
+
+4.Explore the relationship between age and healthcare charges. 
+
+### Analysis: Relationship Between Age and Healthcare Charges
+
+**Objective:** To explore the relationship between patient age and average healthcare charges.
+
+**Steps Performed:**
+
+**Step 1: Creating a PivotTable**
+1. Selected the Healthcare dataset.
+2. Navigated to **Insert → PivotTable**.
+3. Selected **New Worksheet** and created the PivotTable.
+4. Renamed the worksheet to `Age and Charges Analysis`.
+
+**Step 2: Configuring PivotTable Fields**
+1. Dragged **Age** to the Rows area.
+2. Dragged **Charges** to the Values area.
+3. Opened the Value Field Settings for Charges.
+4. Selected **Average** from the summarisation options to calculate the average healthcare charges for each age group.
+5. Verified that the PivotTable displayed the average charges for each age.
+
+**Step 3: Creating a Scatter Chart**
+1. Selected the **Age** and **Charges** columns from the original Healthcare dataset.
+2. Navigated to **Insert → Chart**.
+3. Selected **Scatter Chart**.
+4. Configured the data series as follows:
+   - **Series Name:** Healthcare Charges
+   - **X-axis Values:** Age column
+   - **Y-axis Values:** Charges column
+
+**Step 4: Formatting the Chart**
+1. Added the chart title: `Relationship Between Age and Healthcare Charges`.
+2. Added the X-axis title as **Age**.
+3. Added the Y-axis title as **Charges**.
+4. Verified that the scatter chart displayed the relationship between patient age and healthcare charges.
+
+5 Dashboard Creation:  
+1)Build an interactive dashboard that consolidates all key insights using the above 
+visualizations. Ensure visual clarity and ease of interpretation for all chart types. 
+
+2)Add slicers for the fields “Weight Status” and “Diabetes Status” to enable filtering across 
+all visualizations, supporting comparison of health outcomes and charges based on body 
+weight and diabetes condition.
+### Interactive Healthcare Dashboard
+
+**Objective:** To create an interactive healthcare dashboard that consolidates key insights from the dataset using KPIs, PivotTables, charts, and slicers. The dashboard allows users to explore healthcare information dynamically based on Diabetes Status and Weight Status.
+
+**Steps Performed:**
+
+**Step 1: Creating a KPI PivotTable**
+1. Selected the Healthcare dataset.
+2. Navigated to **Insert → PivotTable**.
+3. Selected **New Worksheet** and created the PivotTable.
+4. Renamed the worksheet to `Dashboard`.
+5. Configured the PivotTable fields to display the following key performance indicators (KPIs):
+   - **Diabetes Status:** Used to identify the diabetes categories.
+   - **Total Patients:** Added Customer ID to the Values area and selected **Count**.
+   - **Diabetes Prevalence:** Calculated the percentage of patients with diabetes among the total patients.
+   - **Total Hospital Charges:** Added Charges to the Values area and selected **Sum**.
+   - **Average Hospital Charges:** Added Charges to the Values area and selected **Average**.
+6. Formatted the KPI values for clear presentation.
+
+**Step 2: Adding Slicers**
+1. Selected a PivotTable in the dashboard.
+2. Navigated to **Insert → Slicer**.
+3. Selected the following fields:
+   - Diabetes Status
+   - Weight Status
+4. Inserted the slicers into the dashboard.
+5. Positioned the slicers appropriately for easy access.
+
+**Step 3: Connecting Slicers to All PivotTables**
+1. Selected the Diabetes Status slicer.
+2. Opened the **Report Connections** or **PivotTable Connections** option.
+3. Selected all relevant PivotTables created for the healthcare analysis.
+4. Repeated the same process for the Weight Status slicer.
+5. Verified that both slicers were connected to all relevant PivotTables.
+
+**Step 4: Consolidating Dashboard Visualizations**
+1. Arranged the KPI summary and previously created charts on the Dashboard worksheet.
+2. Included the visualizations covering:
+   - Cancer History by Smoker Status.
+   - Major Surgeries and Average HbA1C by Transplant History.
+   - Healthcare Charges by Weight Status and Diabetes Status.
+   - Average Healthcare Charges by Hospital Tier and State.
+   - Relationship Between Age, BMI and HbA1C.
+   - Relationship Between Age and Healthcare Charges.
+3. Arranged the charts and KPI summary to maintain a clear and organised dashboard layout.
+4. Added appropriate chart titles, axis labels, legends, and data labels wherever required.
+
+**Step 5: Testing Dashboard Interactivity**
+1. Selected different categories using the Diabetes Status slicer.
+2. Observed the changes in the KPI values and connected PivotTable visualizations.
+3. Selected different categories using the Weight Status slicer.
+4. Verified that the KPI values and connected charts updated according to the selected filters.
+5. Tested different combinations of both slicers to ensure that the dashboard responded correctly.
+
+### Dashboard Layout
+
+The interactive healthcare dashboard is organised into the following sections to ensure visual clarity and ease of interpretation.
+
+**1. Top Section – Dashboard Title and Slicers**
+- Dashboard title.
+- Diabetes Status slicer.
+- Weight Status slicer.
+
+**2. KPI Section – Key Performance Indicators**
+- Total Patients.
+- Diabetes Prevalence.
+- Total Hospital Charges.
+- Average Hospital Charges.
+
+**3. Middle Section – Healthcare Analysis Charts**
+- Healthcare Charges by Weight Status and Diabetes Status.
+- Weight Status Analysis.
+- Diabetes Status Analysis.
+- Average Healthcare Charges by Hospital Tier and State.
+
+**4. Bottom Section – Age-Related and Other Analysis Charts**
+- Relationship Between Age, BMI and HbA1C.
+- Relationship Between Age and Healthcare Charges.
+- Other healthcare analysis visualizations.
+
+**Dashboard Interactivity:**
+
+The Diabetes Status and Weight Status slicers are connected to all relevant PivotTables. Selecting different slicer values dynamically updates the KPI values and associated charts, allowing users to explore the healthcare data using different filter combinations.
 
 
