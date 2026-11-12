@@ -105,5 +105,22 @@ tier' columns, and fill in the missing values accordingly.
 
 **Result:** Missing values in the three columns are replaced with their respective most frequently occurring values, while existing values remain unchanged.
       
+d) If any 'State ID' values are missing, consider filling them with 'Unknown' or using another 
+appropriate strategy.  
+
+1. Used the `COUNTIF` function to calculate the frequency of each State ID value in the State ID column.
+   
+   Example:
+   - `=COUNTIF(Y2:Y2344,"R1013")`
+   - `=COUNTIF(Y2:Y2344,"R1012")`
+   - `=COUNTIF(Y2:Y2344,"R1011")`
+   - `=COUNTIF(Y2:Y2344,"R1014")`
+
+2. Compared the occurrence counts of the State ID values to identify the most frequently occurring value.
+3. Checked for missing values in the State ID column.
+4. Replaced missing State ID values with **"Unknown"** to avoid assigning an incorrect State ID to those records.
+5. Used a helper column with the following formula to identify missing values:
+`=IF(Y2="","Unknown",Y2)`
+6. Filled the formula down for all records, then copied the results and pasted them as values.
 
 
