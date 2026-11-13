@@ -1,136 +1,163 @@
- Healthcare-Data-Analysis
-# 1.Problem Statement
-This project focuses on analyzing healthcare data to identify patient health trends, medical histories, hospitalization patterns, and healthcare costs. It involves data cleaning, transformation, exploration, and visualization to generate meaningful insights that support informed decision-making and improve healthcare management.
-## ## 2. Dataset Description
+# Healthcare Data Analysis
 
-The healthcare dataset contains **three related tables with 2,335 customer records**, covering customer information, medical examinations, and hospitalisation details. The tables are linked through the common **Customer ID** column, enabling comprehensive analysis of patient health conditions, medical history, hospitalisation patterns, and healthcare expenses.
+## 1. Project Overview
 
-### 1.2 Dataset Structure
+### Problem Statement
+
+This project focuses on analysing healthcare data to identify patient health trends, medical histories, hospitalisation patterns, and healthcare costs.
+
+The project involves data cleaning, transformation, data integration, exploratory data analysis (EDA), and data visualisation to generate meaningful insights that support informed decision-making and improve healthcare management.
+
+### Project Objectives
+
+- Identify patient health conditions and medical histories.
+- Analyse the relationship between smoking habits and cancer history.
+- Examine BMI and HbA1c levels across different patient groups.
+- Explore hospitalisation patterns across hospital tiers and states.
+- Analyse healthcare expenditure across different patient categories.
+- Develop an interactive dashboard to present key healthcare insights.
+
+## 2. Dataset Description
+
+The healthcare dataset consists of three related tables containing 2,335 customer records, covering customer information, medical examinations, and hospitalisation details.
+
+The tables are linked through the common **Customer ID** column, enabling comprehensive analysis of patient health conditions, medical history, hospitalisation patterns, and healthcare expenses.
+
+### 2.1 Dataset Structure
 
 | Worksheet | Rows | Columns | Description |
 |---|---:|---:|---|
 | Customer Names | 2,335 | 2 | Customer identification and names |
 | Medical Examinations | 2,335 | 8 | Health conditions, examination results, and medical history |
 | Hospitalisation Details | 2,343 | 9 | Hospitalisation records, hospital tiers, and healthcare charges |
-| **Total** | **7,013** | **19** | **Combined healthcare dataset** |
+| **Total** | **7,013** | **19** | **Combined dataset records and columns** |
 
-### Key Data Attributes
+### 2.2 Key Data Attributes
 
 - **Customer Information:** Customer IDs and names.
 - **Medical Information:** BMI, HbA1c, heart issues, transplant history, cancer history, major surgeries, and smoking status.
 - **Hospitalisation Information:** Admission dates, number of children, healthcare charges, hospital tiers, city tiers, and state IDs.
 
-### Data Overview
+### 2.3 Data Overview
 
-- All 2,335 Customer IDs in the Customer Names and Medical Examinations tables are unique.
-- The Medical Examinations table contains information on smoking habits, medical conditions, and surgery history.
-- The Hospitalisation Details table contains 2,343 records, indicating that some customers may have multiple hospitalisation records.
-- Hospital Tier 2 has the highest number of records (1,339).
-- Healthcare charges range from ₹563.84 to ₹63,770.43.
+- Customer Names and Medical Examinations contain 2,335 unique Customer IDs each.
+- Hospitalisation Details contains 2,343 records, indicating that some customers have multiple hospitalisation records.
+- Hospital Tier 2 has the highest number of records, with 1,339.
+- Healthcare charges range from ₹563.84 to ₹63,770.43, based on the reported dataset values.
 
-### Analysis Objectives
+## 3. Data Preprocessing and Cleaning
 
-The dataset supports analysis of:
-- Patient health conditions and medical history.
-- Smoking habits and their relationship with cancer history.
-- BMI, HbA1c, and age-related health trends.
-- Hospitalisation patterns across hospital and city tiers.
-- Healthcare expenses and variations across patient groups.
+### 3.1 Identifying Missing Values
 
-### 1.3 Data Preprocessing
-a) Check for the number of missing values marked with '?' in each column of the “Medical 
-Examinations” Table and "Hospitalization Details" Table.  
+**Objective:** Identify the number of missing values represented by `?` in each column of the Medical Examinations and Hospitalisation Details tables.
 
+**Methodology:**
 
-The `COUNTIF` function was used to identify and count the missing values represented by `?` in each column of the **Medical Examinations** and **Hospitalisation Details** tables.
+Used the Excel `COUNTIF` function to identify and count occurrences of `?`.
 
-**Formula used:**
+**Formula:**
+
 ```excel
 =COUNTIF(A2:A2344,"~?")
 ```
-The tilde (`~`) was used as an escape character to treat `?` as a literal character rather than a wildcard.
+
+The tilde (`~`) acts as an escape character, allowing Excel to treat `?` as a literal character rather than a wildcard.
 
 **Results:**
 
-- **Hospitalisation Details:** Missing values were identified in the respective columns, with counts of `6, 2, 3, 0, 0, 0, 1, 1, 2`.
-- **Medical Examinations:** Missing values were identified in the respective columns, with counts of `0, 0, 0, 0, 0, 0, 0, 2`.
+- **Hospitalisation Details:** Missing-value counts across the nine columns were 6, 2, 3, 0, 0, 0, 1, 1, and 2.
+- **Medical Examinations:** Missing-value counts across the eight columns were 0, 0, 0, 0, 0, 0, 0, and 2.
 
-These results indicate that the Hospitalisation Details table contains missing values across multiple columns, while the Medical Examinations table contains missing values in only one column (2 occurrences).
+**Outcome:** Identified missing values across both worksheets to determine the appropriate cleaning strategies.
 
+### 3.2 Handling Missing Month and Year Values
 
-b)Fill in the missing values of ‘month’ with Sep and ‘year’ with its average rounded to the 
-nearest integer.  
+**Objective:** Replace missing values in the Month and Year columns.
 
-Steps:
-for month
-1. Insert a temporary column next to Month.
-2. Enter the formula in the first data row.
-3. Drag the formula down to all records.
-4. Copy the resulting values.
-5. Use Paste Special → Values to replace the original Month column.
+**Month column:**
 
-for year
-1.Calculate the average of the available values in the Year column using the AVERAGE() function.
-2.Apply the ROUND() function to round the calculated average to the nearest integer.
-3.Replace missing values in the Year column with the rounded average.
+1. Inserted a temporary helper column next to the Month column.
+2. Used an IF formula to replace missing values with `Sep` while retaining existing values.
+3. Applied the formula to all records.
+4. Copied the resulting values.
+5. Used Paste Special → Values to update the original column.
 
+**Year column:**
 
-c)Determine the most frequently occurring values in the ‘smoker’, 'Hospital tier' and 'City 
-tier' columns, and fill in the missing values accordingly. 
+1. Calculated the average of the available Year values using `AVERAGE()`.
+2. Used `ROUND()` to round the calculated average to the nearest integer.
+3. Replaced missing Year values with the rounded average.
+4. Verified the updated values.
 
-**Objective:** Identify the most frequently occurring value in the `Smoker`, `Hospital Tier`, and `City Tier` columns and replace missing values with the respective most frequent value.
+### 3.3 Handling Missing Values in Smoker, Hospital Tier, and City Tier
 
-**steps:**
+**Objective:** Identify the most frequently occurring value (Mode) in each column and use it to replace missing values.
 
-1. Use the `COUNTIF` function to calculate the frequency of each category in the respective columns.
+**Methodology:**
 
-   **Smoker:**
-  =COUNTIF(H2:H2336,"yes")
+Used `COUNTIF` to calculate the frequency of each category.
 
-   **Hospital Tier:**
-  =COUNTIF(W2:W2344,"tier - 3")
-  =COUNTIF(W2:W2344,"tier - 2")
-  =COUNTIF(W2:W2344,"tier - 1")
+**Smoker:**
 
-   **City Tier:**
-  =COUNTIF(X2:X2344,"tier - 3")
-  =COUNTIF(X2:X2344,"tier - 1")
-  =COUNTIF(X2:X2344,"tier - 2")
+```excel
+=COUNTIF(H2:H2336,"yes")
+=COUNTIF(H2:H2336,"no")
+```
 
-2. Compare the counts for each category and identify the value with the highest frequency (Mode).
-3. Use the `IF` function to replace missing values with the identified Mode while retaining existing values.
-4. Replace `"tier - 3/tier - 2/tier - 1"`Most Frequent Value in each formula with the actual Mode identified using `COUNTIF`.
-5. Drag the formulas down to apply them to all records.
-6. Copy the resulting columns and use **Paste Special → Values** to update the original data if required.
+**Hospital Tier:**
 
-**Result:** Missing values in the three columns are replaced with their respective most frequently occurring values, while existing values remain unchanged.
-      
-d) If any 'State ID' values are missing, consider filling them with 'Unknown' or using another 
-appropriate strategy.  
+```excel
+=COUNTIF(W2:W2344,"tier - 1")
+=COUNTIF(W2:W2344,"tier - 2")
+=COUNTIF(W2:W2344,"tier - 3")
+```
 
-1. Used the `COUNTIF` function to calculate the frequency of each State ID value in the State ID column.
-   
-   Example:
-   - `=COUNTIF(Y2:Y2344,"R1013")`
-   - `=COUNTIF(Y2:Y2344,"R1012")`
-   - `=COUNTIF(Y2:Y2344,"R1011")`
-   - `=COUNTIF(Y2:Y2344,"R1014")`
+**City Tier:**
 
-2. Compared the occurrence counts of the State ID values to identify the most frequently occurring value.
-3. Checked for missing values in the State ID column.
-4. Replaced missing State ID values with **"Unknown"** to avoid assigning an incorrect State ID to those records.
-5. Used a helper column with the following formula to identify missing values:
-`=IF(Y2="","Unknown",Y2)`
-6. Filled the formula down for all records, then copied the results and pasted them as values.
+```excel
+=COUNTIF(X2:X2344,"tier - 1")
+=COUNTIF(X2:X2344,"tier - 2")
+=COUNTIF(X2:X2344,"tier - 3")
+```
 
+**Steps:**
 
-3.Data Transformation
-1) Split the ‘names’ column in the “Customer Names” Table into 3 meaningful columns: 
-‘Title’, ‘First Name’, and ‘Last Name’. 
+1. Calculated the frequency of each category using `COUNTIF`.
+2. Compared the counts to identify the most frequently occurring value.
+3. Used the IF function to replace missing values with the corresponding Mode.
+4. Retained existing values without modification.
+5. Applied the formulas to all records.
+6. Used Copy → Paste Special → Values to update the original columns.
 
-**Expected Name Format:**
+**Outcome:** Replaced missing categorical values using the most frequently occurring category in each column.
 
-The original Names column follows this format:
+### 3.4 Handling Missing State ID Values
+
+**Objective:** Handle missing State ID values without assigning an incorrect geographical identifier.
+
+**Steps:**
+
+1. Used `COUNTIF` to examine the frequency of existing State ID values.
+2. Checked the State ID column for missing entries.
+3. Replaced missing values with `Unknown` because the actual State ID could not be established reliably.
+4. Used the following helper-column formula:
+
+```excel
+=IF(Y2="","Unknown",Y2)
+```
+
+5. Applied the formula to all records.
+6. Copied the results and used Paste Special → Values.
+
+**Outcome:** Missing State ID values were identified and represented as `Unknown`.
+
+## 4. Data Transformation
+
+### 4.1 Splitting Customer Names
+
+**Objective:** Split the Names column in the Customer Names worksheet into three meaningful columns: Title, First Name, and Last Name.
+
+**Original Name Format:**
 
 `Last Name, Title. First Name`
 
@@ -138,23 +165,27 @@ Example: `Hawks, Mr. John`
 
 **Steps:**
 
-1. In the **Customer Names** table, created three new columns: **Title**, **First Name**, and **Last Name**.
+1. Created three new columns: Title, First Name, and Last Name.
+2. Extracted the title using:
 
-2. Extracted the title (Mr, Mrs, Ms, etc.) using the following formula:
+```excel
+=LEFT(TRIM(MID(B2,FIND(",",B2)+1,LEN(B2))),FIND(".",TRIM(MID(B2,FIND(",",B2)+1,LEN(B2))))-1)
+```
 
-   `=LEFT(TRIM(MID(B2,FIND(",",B2)+1,LEN(B2))),FIND(".",TRIM(MID(B2,FIND(",",B2)+1,LEN(B2))))-1)`
+3. Extracted the first name using:
 
-3. Extracted the first name using the following formula:
+```excel
+=TRIM(LEFT(TRIM(RIGHT(B2,LEN(B2)-FIND(".",B2))),FIND(" ",TRIM(RIGHT(B2,LEN(B2)-FIND(".",B2)))&" ")-1))
+```
 
-  '=TRIM(LEFT(TRIM(RIGHT(B2,LEN(B2)-FIND(".",B2))),FIND(" ",TRIM(RIGHT(B2,LEN(B2)-FIND(".",B2)))&" ")-1))'
+4. Extracted the last name using:
 
-4. Extracted the last name using the following formula:
+```excel
+=LEFT(B2,FIND(",",B2)-1)
+```
 
-   `=LEFT(B2,FIND(",",B2)-1)`
-
-5. Applied each formula to the remaining records by dragging the fill handle down.
-
-6. Verified the extracted values to ensure that the Title, First Name, and Last Name were placed in their respective columns.
+5. Applied the formulas to all records using the fill handle.
+6. Verified the extracted values.
 
 **Expected Output:**
 
@@ -162,493 +193,673 @@ Example: `Hawks, Mr. John`
 |---|---|---|---|
 | Hawks, Mr. John | Mr | John | Hawks |
 
-2)Convert the "NumberOfMajorSurgeries" column in the “Medical Examinations” Table to numerical data by replacing non-numeric characters with meaningful numerical values. 
+### 4.2 Converting NumberOfMajorSurgeries into Numerical Data
+
+**Objective:** Convert non-numeric values in the NumberOfMajorSurgeries column into meaningful numerical values.
 
 **Steps:**
 
-1. Insert a new column named `NumberOfMajorSurgeries_Cleaned` next to the original column.
-2. Enter the following IF formula in the first data row:
+1. Created a new column named `NumberOfMajorSurgeries_Cleaned`.
+2. Used the IF function to convert `No major surgery` into `0`, while retaining existing numerical values.
 
-   ```excel
-   =IF(G2="No major surgery",0,VALUE(G2))
-   ```
-3. Press Enter to apply the formula.
-4. Drag the fill handle down to apply the formula to all remaining rows.
-5. Verify that:
-   - `No major surgery` is converted to `0`.
-   - Existing numerical values (1.00, 2.00, 3.00) are retained as numbers.
-6. Copy the cleaned column.
-7. Use **Paste Special → Values** to replace the formulas with their calculated values.
+**Formula:**
 
-**Result:** The `NumberOfMajorSurgeries` column is converted into numerical data, with `No major surgery` replaced by `0` using the IF function.
+```excel
+=IF(G2="No major surgery",0,VALUE(G2))
+```
 
-3)Check for inconsistencies in the 'Heart Issues' and 'smoker' columns and propose 
-corrective actions if necessary.
-steps
+3. Applied the formula to all records.
+4. Verified that:
+   - `No major surgery` was converted to `0`.
+   - Existing numerical values such as 1.00, 2.00, and 3.00 were retained as numbers.
+5. Copied the cleaned column and used Paste Special → Values.
 
-1. Used the `PROPER` function to standardize the text formatting in the **Heart Issues** and **Smoker** columns.
-2. Applied the following formula to the Heart Issues column:`=PROPER(A2)`
-3. Applied the following formula to the Smoker column:`=PROPER(B2)`
-4. Dragged the formulas down to apply them to all records.
-5. Reviewed the standardized values to identify inconsistencies in capitalization, such as `YES`, `yes`, and `Yes`.
-6. Replaced the original values with the corrected, consistently formatted values using Copy and Paste Values.
-7. Verified the columns to ensure consistent text formatting.
+**Outcome:** Converted the NumberOfMajorSurgeries column into numerical data for further analysis.
 
-4) Create a new column named “Weight Status” that categorizes BMI into different 
-categories as below:  
-BMI 
-Weight Status 
-Below 18.5 -Underweight 
-18.5 – 24.9 - Normal Weight 
-25.0 – 29.9  - Overweight
-30.0 and Above Obesity 
+### 4.3 Standardising Heart Issues and Smoker Columns
 
-steps
+**Objective:** Identify and correct inconsistencies in the Heart Issues and Smoker columns.
 
-1. Created a new column named **Weight Status** in the Medical Examinations table.
-2. Used nested `IF` conditions to categorize BMI values into four weight-status categories based on the specified BMI ranges.
-3. Entered the following formula, assuming the BMI value is in cell `M3`:
- `=IF(M3<18.5,"Underweight",IF(M3<25,"Normal Weight",IF(M3<30,"Overweight","Obesity")))`
-4. Applied the formula to all records by dragging the fill handle down.
-5. Verified the categorized results against the specified BMI ranges.
+**Steps:**
+
+1. Reviewed both columns to identify inconsistent text formatting.
+2. Used the `PROPER` function to standardise capitalization.
+
+**Heart Issues:**
+
+```excel
+=PROPER(A2)
+```
+
+**Smoker:**
+
+```excel
+=PROPER(B2)
+```
+
+3. Applied the formulas to all records.
+4. Reviewed the results to identify capitalization differences such as `YES`, `yes`, and `Yes`.
+5. Replaced the original values using Copy → Paste Values.
+6. Verified the updated columns.
+
+**Outcome:** Standardised the capitalization of categorical values in both columns.
+
+### 4.4 Creating Weight Status
+
+**Objective:** Create a new column named Weight Status to categorise patients based on their BMI values.
 
 **BMI Classification:**
 
-| BMI Range      | Weight Status |
-| -------------- | ------------- |
-| Below 18.5     | Underweight   |
-| 18.5 – 24.9    | Normal Weight |
-| 25.0 – 29.9    | Overweight    |
-| 30.0 and above | Obesity       |
+| BMI Range | Weight Status |
+|---|---|
+| Below 18.5 | Underweight |
+| 18.5 – Below 25 | Normal Weight |
+| 25 – Below 30 | Overweight |
+| 30 and Above | Obesity |
 
-**Result:** The new `Weight Status` column categorizes each customer's BMI into the appropriate weight-status category.
+**Formula:**
 
-5)Create a new column named “Diabetes Status” and fill it as per the information given 
-below:  
-HbA1C 
-Diabetes Status 
-Below 5.7 Normal
-5.7 – 6.4 Prediabetes 
-6.5 and Above Diabetes 
+```excel
+=IF(M3<18.5,"Underweight",IF(M3<25,"Normal Weight",IF(M3<30,"Overweight","Obesity")))
+```
 
-steps
+**Steps:**
 
-1. Created a new column named **Diabetes Status** in the Medical Examinations table.
-2. Used nested `IF` conditions to categorize HbA1C values into three categories based on the specified ranges.
-3. Entered the following formula, assuming the HbA1C value is in cell `O3`:`=IF(O3="","",IF(O3<5.7,"Normal",IF(O3<6.5,"Prediabetes","Diabetes")))`
-4. Applied the formula to all records by dragging the fill handle down.
-5. Verified the results against the specified HbA1C ranges.
-6. Kept the Diabetes Status cell blank when the corresponding HbA1C value was missing.
-**HbA1C Classification:**
+1. Created a new column named Weight Status.
+2. Applied nested IF conditions to classify BMI values.
+3. Filled the formula down for all records.
+4. Verified the resulting classifications against the specified BMI ranges.
 
-| HbA1C Range | Diabetes Status |
+**Outcome:** Categorised patients into four weight-status groups based on BMI.
+
+### 4.5 Creating Diabetes Status
+
+**Objective:** Create a new column named Diabetes Status based on HbA1c values.
+
+**HbA1c Classification:**
+
+| HbA1c Range | Diabetes Status |
 |---|---|
 | Below 5.7 | Normal |
 | 5.7 – Below 6.5 | Prediabetes |
 | 6.5 and Above | Diabetes |
 
-6).Merge ‘year’, ‘month’ and ‘date’ columns in the “Hospitalization Details” Table into one 
-column named ‘Date of Birth’ and format it in ‘DD-MMM-YYYY’ custom format. 
-###  Combining Year, Month, and Date into Date of Birth
+**Formula:**
 
-1. In the **Hospitalization Details** table, created a new column named **Date of Birth**.
-2. Combined the existing `year`, `month`, and `date` columns into a single date value.
-3. Since the month column contained text values (e.g., `Sep`), used the `DATE`, `DATEVALUE`, and `MONTH` functions to convert the month name into its corresponding numerical value.
-4. Entered the following formula, assuming:
-   - `Z3` contains the year.
-   - `AA3` contains the month.
-   - `AB3` contains the date.
-`=DATE(VALUE(Z3),MONTH(DATEVALUE("1 "&AA3&" 2000")),VALUE(AB3))`
+```excel
+=IF(O3="","",IF(O3<5.7,"Normal",IF(O3<6.5,"Prediabetes","Diabetes")))
+```
 
-5. Applied the formula to all records by dragging the fill handle down.
-6. Selected the **Date of Birth** column and applied the custom date format `DD-MMM-YYYY`.
-7. Verified the resulting dates to ensure that the year, month, and date were combined correctly.
+**Steps:**
 
-**Result:** The separate year, month, and date values were merged into a single Date of Birth column and displayed in the `DD-MMM-YYYY` format.
+1. Created a new column named Diabetes Status.
+2. Used nested IF conditions to categorise HbA1c values.
+3. Retained blank values when the corresponding HbA1c value was missing.
+4. Applied the formula to all records.
+5. Verified the classifications against the specified ranges.
 
- 7).Calculate the ‘Age’ of each customer based on their ‘Date of Birth’ and the date of 
-collection of the dataset, which is 8thJune 2023. 
-### . Calculating Customer Age
+**Outcome:** Categorised patients into Normal, Prediabetes, and Diabetes groups based on HbA1c values.
 
-1. Created a new column named **Age** in the Hospitalization Details table.
-2. Calculated the age of each customer based on their **Date of Birth**, using the dataset collection date, **8th June 2023**, as the reference date.
-3. Entered the following formula, assuming `AH3` contains the customer's Date of Birth:
-`=2023-YEAR(AH3)`
-4. Applied the formula to all records by dragging the fill handle down.
-5. Verified the calculated ages to ensure that the results were based on the year of birth and the dataset collection year.
+### 4.6 Combining Year, Month, and Date into a Single Date Column
 
-**Result:** The Age column contains the calculated age of each customer based on the dataset collection year (2023).
+**Objective:** Combine the Year, Month, and Date columns in the Hospitalisation Details worksheet into a single date column.
 
-8)Format ‘charges’ column as currency ($). 
-### . Formatting the Charges Column as Currency
+**Steps:**
 
-1. Selected the **Charges** column in the Hospitalization Details worksheet.
-2. Navigated to the **Home** tab and opened the **Number Format** dropdown in the Number group.
-3. Changed the existing **General** format to **Currency**.
-4. Selected the US Dollar (`$`) currency symbol.
-5. Set the decimal places to 2.
-6. Verified that all charge values were displayed in the `$` currency format.
+1. Created a new column for the combined date.
+2. Used the DATE, DATEVALUE, and MONTH functions to combine the individual components.
 
-**Result:** The Charges column was successfully formatted as US Dollar currency (`$`) with two decimal places.
+Assuming:
+- Z3 contains Year.
+- AA3 contains Month.
+- AB3 contains Date.
 
-4.Exploratory Data Analysis
-Create a new sheet named “Healthcare", combine all three tables into one, using 
-Customer ID as the common column, utilizing VLOOKUP. 
+**Formula:**
 
-### 4.1. Combining the Three Tables Using VLOOKUP
+```excel
+=DATE(VALUE(Z3),MONTH(DATEVALUE("1 "&AA3&" 2000")),VALUE(AB3))
+```
 
-1. Created a new worksheet named **Healthcare** in the Excel workbook.
-2. Used **Customer ID** as the common column to combine data from the three existing tables:
-   - Customer Names
-   - Medical Examinations
-   - Hospitalisation Details
-3. Retained **Customer ID** as the first column in the new Healthcare worksheet.
-4. Used the `VLOOKUP` function with an exact match (`0`) to retrieve the required information from the respective worksheets.
+3. Applied the formula to all records.
+4. Formatted the resulting column using the custom date format:
 
-**VLOOKUP formulas used:**
+```text
+DD-MMM-YYYY
+```
 
-**Customer Names table:**
-- `=VLOOKUP(A2,'Customer Names'!A:D,4,0)` – First Name
-- `=VLOOKUP(A2,'Customer Names'!A:E,5,0)` – Last Name
+5. Verified the combined dates.
 
-**Medical Examinations table:**
-- `=VLOOKUP(A2,'Medical Examinations'!A:B,2,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:D,4,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:F,6,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:G,7,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:H,8,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:I,9,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:J,10,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:C,3,0)`
-- `=VLOOKUP(A2,'Medical Examinations'!A:E,5,0)`
+**Outcome:** Combined the separate date components into a single date column.
 
-**Hospitalisation Details table:**
-- `=VLOOKUP(A2,'Hospitalisation Details'!A:J,10,0)`
-- `=VLOOKUP(A2,'Hospitalisation Details'!A:F,6,0)`
-- `=VLOOKUP(A2,'Hospitalisation Details'!A:G,7,0)`
-- `=VLOOKUP(A2,'Hospitalisation Details'!A:H,8,0)`
-- `=VLOOKUP(A2,'Hospitalisation Details'!A:I,9,0)`
-- `=VLOOKUP(A2,'Hospitalisation Details'!A:K,11,0)`
+*Note: The column should be named Date of Birth only if these source fields represent patients' birth dates. If they represent hospitalisation dates, use Admission Date instead.*
 
-5. Used the appropriate column index in each formula to retrieve the required field from its source worksheet.
-6. Applied the formulas to all customer records by dragging the fill handle down.
-7. Retained the following required columns in the combined Healthcare table:
+### 4.7 Calculating Customer Age
 
-   - Customer ID
-   - First Name
-   - BMI
-   - HBA1C
-   - Heart Issues
-   - Any Transplants
-   - Cancer History
-   - NumberOfMajorSurgeries
-   - Smoker
-   - Weight Status
-   - Diabetes Status
-   - Date of Birth
-   - Charges
-   - Hospital Tier
-   - City Tier
-   - State ID
-   - Age
+**Objective:** Calculate the age of each customer using the date of birth and the dataset collection date, 8 June 2023.
 
-8. Verified the retrieved values against the original worksheets to ensure that the records were correctly matched using Customer ID.
+**Steps:**
 
-**Result:** Successfully combined the required information from the three worksheets into a single **Healthcare** table using Customer ID as the common column and VLOOKUP with exact-match lookup.
+1. Created a new column named Age.
+2. Used the DATEDIF function to calculate completed years as of the collection date.
 
-4.2 Analysis using Pie/Donut Chart
-1) What is the distribution of cancer history among smokers and non-smokers? 
-### Distribution of Cancer History Among Smokers and Non-Smokers
+Assuming AH3 contains the customer's Date of Birth:
 
-**Step 1: Creating a PivotTable**
+```excel
+=DATEDIF(AH3,DATE(2023,6,8),"Y")
+```
 
-1. Opened the **Healthcare** worksheet containing the combined healthcare dataset.
-2. Selected any cell within the dataset.
-3. Navigated to the **Insert** tab in Excel for the Web.
-4. Clicked **PivotTable**.
-5. Selected the complete dataset as the source.
-6. Chose **New Worksheet** and clicked **Create**.
-7. Renamed the new worksheet to **Cancer History Analysis**.
+3. Applied the formula to all records.
+4. Verified the calculated ages.
 
-**Step 2: Naming the PivotTable**
+**Outcome:** Calculated customer age using the specified dataset collection date.
 
-1. Selected any cell inside the PivotTable.
-2. Navigated to the **PivotTable** tab.
-3. Located the **PivotTable Name** field.
-4. Entered the name `Pivot_Cancer_History` and pressed Enter.
+### 4.8 Formatting Healthcare Charges
 
-**Step 3: Configuring PivotTable Fields**
+**Objective:** Format the Charges column as currency.
 
-1. In the PivotTable Fields pane, dragged the following fields into their respective areas:
-   - **Rows:** Smoker
-   - **Columns:** Cancer History
-   - **Values:** Customer ID
-2. Opened the Customer ID value field settings and selected **Count** to calculate the number of customers in each category.
-3. Verified the PivotTable results to ensure that cancer history was distributed between smokers and non-smokers.
+**Steps:**
 
-**Step 4: Creating a Pie Chart**
+1. Selected the Charges column.
+2. Navigated to Home → Number Format.
+3. Selected Currency.
+4. Selected the appropriate currency symbol based on the original dataset.
+5. Set the decimal places to two.
+6. Verified the formatting.
+
+**Outcome:** Formatted healthcare charges as currency with two decimal places.
+
+## 5. Exploratory Data Analysis (EDA)
+
+### 5.1 Combining the Three Tables Using VLOOKUP
+
+**Objective:** Create a consolidated Healthcare dataset by retrieving information from the three worksheets using Customer ID as the common identifier.
+
+**Steps:**
+
+1. Created a new worksheet named `Healthcare`.
+2. Retained Customer ID as the common lookup column.
+3. Used VLOOKUP with an exact-match condition (`0`) to retrieve information from the source worksheets.
+
+**Example formulas:**
+
+**Customer Names:**
+
+```excel
+=VLOOKUP(A2,'Customer Names'!A:D,4,0)
+```
+
+**Medical Examinations:**
+
+```excel
+=VLOOKUP(A2,'Medical Examinations'!A:H,8,0)
+```
+
+**Hospitalisation Details:**
+
+```excel
+=VLOOKUP(A2,'Hospitalisation Details'!A:K,11,0)
+```
+
+The column index was adjusted according to the required field in each source worksheet.
+
+4. Applied the formulas to the required records.
+5. Verified the retrieved values against the original worksheets.
+6. Retained the following fields in the consolidated dataset:
+
+- Customer ID
+- First Name
+- BMI
+- HbA1c
+- Heart Issues
+- Any Transplants
+- Cancer History
+- NumberOfMajorSurgeries
+- Smoker
+- Weight Status
+- Diabetes Status
+- Date of Birth
+- Charges
+- Hospital Tier
+- City Tier
+- State ID
+- Age
+
+**Outcome:** Created a consolidated Healthcare dataset for further analysis.
+
+**Data integration consideration:** Since Hospitalisation Details contains 2,343 records for 2,335 unique customers, the consolidated dataset should preserve all hospitalisation records when analysing charges and hospitalisation patterns. A single VLOOKUP against a one-to-many relationship retrieves only the first matching record. Therefore, use the Hospitalisation Details table as the base when retaining all hospitalisation records and retrieve customer and medical information using Customer ID.
+
+## 6. Data Analysis and Visualisation
+
+### 6.1 Analysis Using Pie/Donut Charts
+
+#### 6.1.1 Distribution of Cancer History Among Smokers and Non-Smokers
+
+**Objective:** Analyse the distribution of cancer history among smokers and non-smokers.
+
+**PivotTable Configuration:**
+
+- Rows: Smoker
+- Columns: Cancer History
+- Values: Count of Customer ID
+
+**Steps:**
+
+1. Selected the Healthcare dataset.
+2. Navigated to Insert → PivotTable.
+3. Created a PivotTable using the Healthcare dataset.
+4. Named the PivotTable `cancer_history`.
+5. Configured the PivotTable fields as mentioned above.
+6. Changed the Customer ID aggregation to Count.
+7. Verified the results.
+
+**Chart Creation:**
 
 1. Selected the PivotTable results.
-2. Navigated to the **Insert** tab.
-3. Selected **Pie Chart** from the chart options.
-4. Added the chart title: **Distribution of Cancer History Among Smokers and Non-Smokers**.
-5. Verified the chart legend and data labels to ensure that the cancer history categories were clearly represented.
+2. Navigated to Insert → Chart.
+3. Created a chart to compare cancer history among smokers and non-smokers.
+4. Added a descriptive title, legend, and data labels.
 
-**Result:** Created a named PivotTable (`Pivot_Cancer_History`) and Pie Chart to analyze and visualize the distribution of cancer history among smokers and non-smokers based on the count of Customer IDs.
+**Analysis:**
 
+The PivotTable shows the following distribution:
 
-### Analysis: Major Surgeries and Average HbA1C by Transplant History
+| Smoking Status | No Cancer History | Cancer History | Total |
+|---|---:|---:|---:|
+| Non-Smokers | 1,540 | 307 | 1,847 |
+| Smokers | 404 | 84 | 488 |
+| **Total** | **1,944** | **391** | **2,335** |
 
-**Objective:** To compare the total number of major surgeries and the average HbA1C levels between patients with and without a history of transplants.
+- Non-smokers account for 1,847 patients, of whom 307 have a cancer history.
+- Smokers account for 488 patients, of whom 84 have a cancer history.
+- Approximately 16.62% of non-smokers have a cancer history.
+- Approximately 17.21% of smokers have a cancer history.
 
-2)How does the total number of major surgeries and average HbA1C differ between patients with and without a history of transplants? 
+**Conclusion:**
 
-**Steps Performed:**
+The proportion of patients with a cancer history is slightly higher among smokers than non-smokers in this dataset. However, the difference is relatively small, and the findings do not establish a causal relationship between smoking and cancer history.
 
-**Step 1: Creating a PivotTable**
+#### 6.1.2 Major Surgeries and Average HbA1c by Transplant History
+
+**Objective:** Compare the total number of major surgeries and average HbA1c levels between patients with and without a history of transplants.
+
+**PivotTable Configuration:**
+
+- Rows: Any Transplants
+- Values: Sum of NumberOfMajorSurgeries
+- Values: Average of HbA1c
+
+**Steps:**
+
 1. Selected the Healthcare dataset.
-2. Navigated to **Insert → PivotTable**.
-3. Selected **New Worksheet** and created the PivotTable.
-4. Renamed the worksheet to `Transplant Analysis`.
+2. Navigated to Insert → PivotTable.
+3. Created a PivotTable named `major_surgeries`.
+4. Added Any Transplants to Rows.
+5. Added NumberOfMajorSurgeries to Values and selected Sum.
+6. Added HbA1c to Values and selected Average.
+7. Verified the calculated results.
 
-**Step 2: Configuring PivotTable Fields**
-1. Dragged **Any Transplants** to the Rows area.
-2. Dragged **NumberOfMajorSurgeries** to the Values area.
-3. Changed the summarisation method to **Sum** to calculate the total number of major surgeries.
-4. Dragged **HBA1C** to the Values area.
-5. Changed the summarisation method to **Average** to calculate the average HbA1C level.
-6. Verified that the PivotTable displayed separate results for patients with and without a history of transplants.
+**Chart Creation:**
 
-**Step 3: Creating a Chart**
-1. Selected the PivotTable data.
-2. Navigated to **Insert → Chart**.
-3. Selected a suitable chart type to visualise the comparison.
-4. Added an appropriate chart title and data labels.
-5. Verified that the chart represented both transplant groups and the two calculated measures.
+1. Selected the PivotTable results.
+2. Created separate charts or a suitable combination chart to compare the two measures.
+3. Added appropriate chart titles, legends, and data labels.
 
-4.3 Analysis using Column/Bar Chart:
-1) How do healthcare charges vary based on different weight statuses and diabetes statuses? 
-### Analysis: Healthcare Charges by Weight Status and Diabetes Status
+**Analysis:**
 
-**Objective:** To analyse how healthcare charges vary among patients with different weight statuses and diabetes statuses.
+- Patients without a transplant history have an average HbA1c level of 6.67.
+- Patients with a transplant history have an average HbA1c level of 5.19.
+- A total of 1,417 major surgeries are recorded for patients without transplants.
+- A total of 162 major surgeries are recorded for patients with transplants.
+- Patients without transplants account for approximately 89.74% of the recorded major surgeries.
+- Patients with transplants account for approximately 10.26%.
 
-**Steps Performed:**
+The overall average HbA1c level is 6.58, with 1,579 major surgeries recorded across both groups.
 
-**Step 1: Creating a PivotTable**
+**Conclusion:**
+
+Patients without a history of transplants account for the majority of recorded major surgeries and have a higher average HbA1c level than patients with a transplant history.
+
+These findings describe differences between the two groups but do not establish a causal relationship between transplant history, HbA1c levels, and major surgeries.
+
+### 6.2 Analysis Using Column/Bar Charts
+
+#### 6.2.1 Healthcare Charges by Weight Status and Diabetes Status
+
+**Objective:** Analyse how healthcare charges vary across different weight-status and diabetes-status categories.
+
+**PivotTable Configuration:**
+
+- Rows: Weight Status
+- Columns: Diabetes Status
+- Values: Average of Charges
+
+An additional PivotTable can be created using Sum of Charges to compare total expenditure.
+
+**Steps:**
+
 1. Selected the Healthcare dataset.
-2. Navigated to **Insert → PivotTable**.
-3. Selected **New Worksheet** and created the PivotTable.
-4. Renamed the worksheet to `Charges Analysis`.
+2. Navigated to Insert → PivotTable.
+3. Created a PivotTable in a new worksheet.
+4. Renamed the worksheet `weight_statuses`.
+5. Added Weight Status to Rows.
+6. Added Diabetes Status to Columns.
+7. Added Charges to Values.
+8. Changed the aggregation to Average to calculate average healthcare charges.
+9. Created a separate PivotTable using Sum of Charges if total expenditure comparison was required.
+10. Created a clustered column or bar chart to visualise the results.
 
-**Step 2: Configuring PivotTable Fields**
-1. Dragged **Weight Status** to the Rows area.
-2. Dragged **Diabetes Status** to the Columns area.
-3. Dragged **Charges** to the Values area.
-4. Changed the summarisation method to **Sum** to calculate the total healthcare charges.
-5. Verified that the PivotTable displayed total charges for each combination of weight status and diabetes status.
+**Patient Distribution Findings:**
 
-**Step 3: Creating a Bar Chart**
-1. Selected the PivotTable data.
-2. Navigated to **Insert → Chart**.
-3. Selected **Bar Chart** to visualise the comparison.
-4. Added an appropriate chart title: `Healthcare Charges by Weight Status and Diabetes Status`.
-5. Added data labels to display the charge values.
-6. Verified that the chart clearly represented the differences in healthcare charges across the categories.
-Observations:
+The patient distribution across weight categories is:
 
-Patients in the Obesity category also include individuals with Normal diabetes status.
+| Weight Status | Number of Patients |
+|---|---:|
+| Obesity | 1,221 |
+| Overweight | 498 |
+| Normal Weight | 464 |
+| Underweight | 152 |
+| **Total** | **2,335** |
 
-The number of patients with Normal diabetes status is higher than the number of patients with Diabetes status in the Obesity category.
+- Obesity is the largest weight category, representing approximately 52.29% of the patients.
+- Overweight represents 498 patients.
+- Normal Weight represents 464 patients.
+- Underweight is the smallest category, with 152 patients.
 
-The number of patients in the Underweight category is comparatively lower than in the Normal Weight, Overweight, and Obesity categories.
+Across diabetes categories:
 
-Healthcare charges vary across different combinations of weight status and diabetes status.
+- Normal: 1,095 patients.
+- Diabetes: 784 patients.
+- Prediabetes: 456 patients.
 
- 2) Can you compare the average charges for each hospital tier within different states?
-### Analysis: Average Healthcare Charges by Hospital Tier and State
+Among obese patients, Normal diabetes status has the highest representation, with 561 patients, followed by Diabetes (423) and Prediabetes (237).
 
-**Objective:** To compare the average healthcare charges across different hospital tiers within different states.
+**Conclusion:**
 
-**Steps Performed:**
+Obesity is the most represented weight category in the dataset, while Underweight is the least represented.
 
-**Step 1: Creating a PivotTable**
+Normal diabetes status has the highest patient count across the dataset.
+
+The patient distribution findings describe the composition of the dataset. The average and total healthcare charges must be examined separately to determine how expenditure varies across weight and diabetes categories.
+
+#### 6.2.2 Average Healthcare Charges by Hospital Tier and State
+
+**Objective:** Compare average healthcare charges across different hospital tiers within different states.
+
+**PivotTable Configuration:**
+
+- Rows: State ID
+- Columns: Hospital Tier
+- Values: Average of Charges
+
+**Steps:**
+
 1. Selected the Healthcare dataset.
-2. Navigated to **Insert → PivotTable**.
-3. Selected **New Worksheet** and created the PivotTable.
-4. Renamed the worksheet to `Hospital Tier Analysis`.
+2. Navigated to Insert → PivotTable.
+3. Created a new PivotTable.
+4. Renamed the worksheet `Hospital Tier Analysis`.
+5. Added State ID to Rows.
+6. Added Hospital Tier to Columns.
+7. Added Charges to Values.
+8. Changed the summarisation method to Average.
+9. Verified the average charges across hospital tiers and states.
+10. Created a bar chart titled `Average Healthcare Charges by Hospital Tier and State`.
 
-**Step 2: Configuring PivotTable Fields**
-1. Dragged **State ID** to the Rows area.
-2. Dragged **Hospital Tier** to the Columns area.
-3. Dragged **Charges** to the Values area.
-4. Changed the summarisation method from **Sum** to **Average** to calculate the average healthcare charges.
-5. Verified that the PivotTable displayed the average charges for each hospital tier within each state.
+**Analysis:**
 
-**Step 3: Creating a Bar Chart**
-1. Selected the PivotTable data.
-2. Navigated to **Insert → Chart**.
-3. Selected **Bar Chart** to visualise the comparison.
-4. Added an appropriate chart title: `Average Healthcare Charges by Hospital Tier and State`.
-5. Added data labels to display the average charge values.
-6. Verified that the chart clearly represented the differences in average healthcare charges across hospital tiers and states.
+- **Overall Trend:** Tier 1 hospitals have the highest average healthcare charges (₹31,239.99), followed by Tier 2 (₹15,760.51) and Tier 3 (₹10,220.83).
 
- 3.Is there any correlation between age and both BMI and HbA1C in the dataset? 
- ### Analysis: Correlation Between Age, BMI and HbA1C
+- **State-Level Comparison:** State R1016 records the highest average charge for Tier 1 hospitals (₹39,868.62).
 
-**Objective:** To identify whether there is any relationship between patient age and their BMI and HbA1C levels.
+- **Tier 2 Comparison:** State R1011 records the highest average charge for Tier 2 hospitals (₹18,997.28).
 
-**Steps Performed:**
+- **Notable Exception:** State R1014 shows a different pattern, where Tier 3 hospitals (₹16,950.49) have higher average charges than Tier 1 (₹13,891.86) and Tier 2 (₹2,395.17).
 
-**Step 1: Selecting the Data**
-1. Opened the `Healthcare` worksheet.
-2. Selected the **Age**, **BMI**, and **HBA1C** columns from the dataset.
+- **Geographical Variation:** Average healthcare charges vary across the ten states, indicating differences in expenditure across geographical locations and hospital tiers.
 
-**Step 2: Creating a Scatter Chart**
-1. Navigated to **Insert → Chart**.
-2. Selected **Scatter Chart** to visualise the relationship between the variables.
-3. Configured the first data series:
-   - **Series Name:** BMI
-   - **X-axis Values:** Age column
-   - **Y-axis Values:** BMI column
-4. Added a second data series to the same chart:
-   - **Series Name:** HBA1C
-   - **X-axis Values:** Age column
-   - **Y-axis Values:** HBA1C column
-5. Used the Age column as the X-axis for both data series.
+**Conclusion:**
 
-**Step 3: Formatting the Chart**
-1. Added the chart title: `Relationship Between Age, BMI and HbA1C`.
-2. Added axis titles:
-   - **X-axis:** Age
-   - **Y-axis:** BMI and HbA1C
-3. Displayed the legend to distinguish the BMI and HbA1C data series.
-4. Verified that both series were plotted against the same Age values.
+The analysis shows that Tier 1 hospitals generally have higher average healthcare charges than Tier 2 and Tier 3 hospitals.
 
-4.Explore the relationship between age and healthcare charges. 
+However, variations such as those observed in State R1014 indicate that hospital tier alone does not explain all differences in healthcare expenditure.
 
-### Analysis: Relationship Between Age and Healthcare Charges
+#### 6.2.3 Relationship Between Age, BMI, and HbA1c
 
-**Objective:** To explore the relationship between patient age and average healthcare charges.
+**Objective:** Explore the relationship between patient age and two health indicators: BMI and HbA1c.
 
-**Steps Performed:**
+**Steps:**
 
-**Step 1: Creating a PivotTable**
+1. Opened the Healthcare worksheet.
+2. Selected Age, BMI, and HbA1c data.
+3. Created separate scatter charts for:
+   - Age vs BMI.
+   - Age vs HbA1c.
+4. Configured Age as the X-axis and the respective health indicator as the Y-axis.
+5. Added appropriate chart titles, axis titles, and data labels where required.
+6. Verified that both charts referenced the correct data columns.
+
+**Analysis:**
+
+- **Age vs BMI:** Average BMI remains relatively stable across different age groups, with most observed values ranging between 31 and 34. This indicates no clear increasing or decreasing trend in average BMI with age.
+
+- **Age vs HbA1c:** The HbA1c values show fluctuations across different age groups. The trend should be interpreted using the corrected HbA1c data and verified chart references.
+
+- **Comparison:** BMI appears relatively consistent across age groups, whereas HbA1c shows greater variation.
+
+**Conclusion:**
+
+The analysis suggests that average BMI remains relatively stable across age groups. A reliable conclusion about the relationship between age and HbA1c requires verification of the plotted values and, if necessary, additional correlation analysis.
+
+#### 6.2.4 Relationship Between Age and Healthcare Charges
+
+**Objective:** Explore the relationship between patient age and average healthcare charges.
+
+**PivotTable Configuration:**
+
+- Rows: Age
+- Values: Average of Charges
+
+**Steps:**
+
 1. Selected the Healthcare dataset.
-2. Navigated to **Insert → PivotTable**.
-3. Selected **New Worksheet** and created the PivotTable.
-4. Renamed the worksheet to `Age and Charges Analysis`.
+2. Navigated to Insert → PivotTable.
+3. Created a PivotTable in a new worksheet.
+4. Renamed the worksheet `Age and Charges Analysis`.
+5. Added Age to Rows.
+6. Added Charges to Values.
+7. Changed the summarisation method to Average.
+8. Verified the average healthcare charges for each age group.
 
-**Step 2: Configuring PivotTable Fields**
-1. Dragged **Age** to the Rows area.
-2. Dragged **Charges** to the Values area.
-3. Opened the Value Field Settings for Charges.
-4. Selected **Average** from the summarisation options to calculate the average healthcare charges for each age group.
-5. Verified that the PivotTable displayed the average charges for each age.
+**Chart Creation:**
 
-**Step 3: Creating a Scatter Chart**
-1. Selected the **Age** and **Charges** columns from the original Healthcare dataset.
-2. Navigated to **Insert → Chart**.
-3. Selected **Scatter Chart**.
-4. Configured the data series as follows:
-   - **Series Name:** Healthcare Charges
-   - **X-axis Values:** Age column
-   - **Y-axis Values:** Charges column
+1. Selected Age and Charges from the original Healthcare dataset.
+2. Navigated to Insert → Chart.
+3. Selected Scatter Chart.
+4. Configured Age as the X-axis and Charges as the Y-axis.
+5. Added a descriptive chart title and axis labels.
+6. Verified the plotted data.
 
-**Step 4: Formatting the Chart**
-1. Added the chart title: `Relationship Between Age and Healthcare Charges`.
-2. Added the X-axis title as **Age**.
-3. Added the Y-axis title as **Charges**.
-4. Verified that the scatter chart displayed the relationship between patient age and healthcare charges.
+**Analysis:**
 
-5 Dashboard Creation:  
-1)Build an interactive dashboard that consolidates all key insights using the above 
-visualizations. Ensure visual clarity and ease of interpretation for all chart types. 
+- **Overall Healthcare Expenditure:** The overall average healthcare charge across the dataset is ₹17,700.73.
 
-2)Add slicers for the fields “Weight Status” and “Diabetes Status” to enable filtering across 
-all visualizations, supporting comparison of health outcomes and charges based on body 
-weight and diabetes condition.
-### Interactive Healthcare Dashboard
+- **Variation Across Age Groups:** Average healthcare charges fluctuate across different age groups, with most observed values ranging between ₹15,000 and ₹23,000.
 
-**Objective:** To create an interactive healthcare dashboard that consolidates key insights from the dataset using KPIs, PivotTables, charts, and slicers. The dashboard allows users to explore healthcare information dynamically based on Diabetes Status and Weight Status.
+- **Higher Average Charges:** Age 65 records the highest average healthcare charge among the selected age groups at ₹23,275.53, followed by age 62 at ₹22,024.46.
 
-**Steps Performed:**
+- **Lower Average Charges:** Age 58 records a comparatively lower average healthcare charge of ₹15,539.13.
 
-**Step 1: Creating a KPI PivotTable**
-1. Selected the Healthcare dataset.
-2. Navigated to **Insert → PivotTable**.
-3. Selected **New Worksheet** and created the PivotTable.
-4. Renamed the worksheet to `Dashboard`.
-5. Configured the PivotTable fields to display the following key performance indicators (KPIs):
-   - **Diabetes Status:** Used to identify the diabetes categories.
-   - **Total Patients:** Added Customer ID to the Values area and selected **Count**.
-   - **Diabetes Prevalence:** Calculated the percentage of patients with diabetes among the total patients.
-   - **Total Hospital Charges:** Added Charges to the Values area and selected **Sum**.
-   - **Average Hospital Charges:** Added Charges to the Values area and selected **Average**.
-6. Formatted the KPI values for clear presentation.
+- **Age-Related Spending Pattern:** Although some older age groups show relatively higher average healthcare charges, the overall pattern does not demonstrate a consistent increase in expenditure with age.
 
-**Step 2: Adding Slicers**
-1. Selected a PivotTable in the dashboard.
-2. Navigated to **Insert → Slicer**.
-3. Selected the following fields:
-   - Diabetes Status
-   - Weight Status
-4. Inserted the slicers into the dashboard.
-5. Positioned the slicers appropriately for easy access.
+**Conclusion:**
 
-**Step 3: Connecting Slicers to All PivotTables**
-1. Selected the Diabetes Status slicer.
-2. Opened the **Report Connections** or **PivotTable Connections** option.
-3. Selected all relevant PivotTables created for the healthcare analysis.
-4. Repeated the same process for the Weight Status slicer.
-5. Verified that both slicers were connected to all relevant PivotTables.
+Average healthcare charges vary across age groups, but the observed pattern does not establish a consistent relationship between increasing age and healthcare expenditure.
 
-**Step 4: Consolidating Dashboard Visualizations**
-1. Arranged the KPI summary and previously created charts on the Dashboard worksheet.
-2. Included the visualizations covering:
-   - Cancer History by Smoker Status.
-   - Major Surgeries and Average HbA1C by Transplant History.
-   - Healthcare Charges by Weight Status and Diabetes Status.
-   - Average Healthcare Charges by Hospital Tier and State.
-   - Relationship Between Age, BMI and HbA1C.
-   - Relationship Between Age and Healthcare Charges.
-3. Arranged the charts and KPI summary to maintain a clear and organised dashboard layout.
-4. Added appropriate chart titles, axis labels, legends, and data labels wherever required.
+Other factors, including medical conditions, hospitalisation frequency, treatment requirements, and hospital tier, may also contribute to differences in healthcare costs.
 
-**Step 5: Testing Dashboard Interactivity**
-1. Selected different categories using the Diabetes Status slicer.
-2. Observed the changes in the KPI values and connected PivotTable visualizations.
-3. Selected different categories using the Weight Status slicer.
-4. Verified that the KPI values and connected charts updated according to the selected filters.
-5. Tested different combinations of both slicers to ensure that the dashboard responded correctly.
+## 7. Interactive Dashboard Development
 
-### Dashboard Layout
+### 7.1 Dashboard Objective
 
-The interactive healthcare dashboard is organised into the following sections to ensure visual clarity and ease of interpretation.
+Develop an interactive healthcare dashboard that consolidates key analytical findings using KPIs, PivotTables, charts, and slicers.
+
+The dashboard enables users to explore patient health information, medical conditions, and healthcare expenditure by applying Diabetes Status and Weight Status filters.
+
+### 7.2 Creating KPI Metrics
+
+Created a new worksheet named `Dashboard` to display key performance indicators.
+
+The following KPIs were included:
+
+| KPI | Description |
+|---|---|
+| Total Patients | Number of unique patients |
+| Diabetes Prevalence | Percentage of patients classified as Diabetes |
+| Total Hospital Charges | Sum of healthcare charges |
+| Average Hospital Charges | Average healthcare charges |
+
+The KPI calculations were configured using PivotTables and appropriate aggregation methods.
+
+### 7.3 Adding Interactive Slicers
+
+Added slicers for the following fields:
+
+- Diabetes Status
+- Weight Status
+
+**Steps:**
+
+1. Selected a PivotTable in the Dashboard worksheet.
+2. Navigated to Insert → Slicer.
+3. Selected Diabetes Status and Weight Status.
+4. Inserted the slicers.
+5. Positioned them at the top of the dashboard.
+6. Used Report Connections or PivotTable Connections to connect the slicers to the relevant PivotTables.
+7. Tested the slicers to verify that the connected PivotTables and charts responded to the selected filters.
+
+### 7.4 Dashboard Visualisations
+
+The dashboard consolidates the following analytical visualisations:
+
+- Cancer History by Smoker Status.
+- Major Surgeries and Average HbA1c by Transplant History.
+- Healthcare Charges by Weight Status and Diabetes Status.
+- Patient Distribution by Weight Status.
+- Patient Distribution by Diabetes Status.
+- Average Healthcare Charges by Hospital Tier and State.
+- Relationship Between Age and BMI.
+- Relationship Between Age and HbA1c.
+- Relationship Between Age and Healthcare Charges.
+
+### 7.5 Dashboard Layout
+
+The dashboard is organised into four main sections.
 
 **1. Top Section – Dashboard Title and Slicers**
-- Dashboard title.
+
+- Healthcare Dashboard title.
 - Diabetes Status slicer.
 - Weight Status slicer.
 
 **2. KPI Section – Key Performance Indicators**
+
 - Total Patients.
 - Diabetes Prevalence.
 - Total Hospital Charges.
 - Average Hospital Charges.
 
-**3. Middle Section – Healthcare Analysis Charts**
+**3. Middle Section – Healthcare Analysis**
+
 - Healthcare Charges by Weight Status and Diabetes Status.
-- Weight Status Analysis.
-- Diabetes Status Analysis.
+- Weight Status Distribution.
+- Diabetes Status Distribution.
 - Average Healthcare Charges by Hospital Tier and State.
 
-**4. Bottom Section – Age-Related and Other Analysis Charts**
-- Relationship Between Age, BMI and HbA1C.
-- Relationship Between Age and Healthcare Charges.
-- Other healthcare analysis visualizations.
+**4. Bottom Section – Age-Related and Other Analysis**
 
-**Dashboard Interactivity:**
+- Age vs BMI.
+- Age vs HbA1c.
+- Age vs Healthcare Charges.
+- Other healthcare analysis visualisations.
 
-The Diabetes Status and Weight Status slicers are connected to all relevant PivotTables. Selecting different slicer values dynamically updates the KPI values and associated charts, allowing users to explore the healthcare data using different filter combinations.
+### 7.6 Testing Dashboard Interactivity
 
+1. Selected different categories using the Diabetes Status slicer.
+2. Observed changes in the connected KPI values and charts.
+3. Selected different categories using the Weight Status slicer.
+4. Verified that the relevant visualisations responded to the selected filters.
+5. Tested different combinations of both slicers.
+6. Verified that the dashboard displayed the corresponding filtered results.
 
+**Outcome:**
+
+Developed an interactive healthcare dashboard that consolidates the key findings from the analysis and enables users to explore healthcare trends through Diabetes Status and Weight Status filters.
+
+## 8. Key Findings and Insights
+
+Based on the exploratory analysis:
+
+1. **Cancer History:** The proportion of patients with a cancer history is slightly higher among smokers (17.21%) than non-smokers (16.62%).
+
+2. **Transplant History:** Patients without a transplant history account for the majority of recorded major surgeries and have a higher average HbA1c level.
+
+3. **Weight Distribution:** Obesity is the largest weight category, representing approximately 52.29% of the patients.
+
+4. **Diabetes Distribution:** Normal diabetes status accounts for the highest number of patients, followed by Diabetes and Prediabetes.
+
+5. **Hospital Tier Analysis:** Tier 1 hospitals generally have higher average healthcare charges than Tier 2 and Tier 3 hospitals.
+
+6. **Age and BMI:** Average BMI remains relatively stable across different age groups.
+
+7. **Age and Healthcare Charges:** Healthcare expenditure varies across age groups, without a consistent increasing trend.
+
+8. **Interactive Dashboard:** Diabetes Status and Weight Status slicers enable users to explore patient categories and associated healthcare metrics.
+
+## 9. Tools and Technologies
+
+- **Microsoft Excel for the Web**
+- Excel Formulas and Functions:
+  - IF
+  - COUNTIF
+  - AVERAGE
+  - ROUND
+  - PROPER
+  - LEFT
+  - RIGHT
+  - MID
+  - FIND
+  - TRIM
+  - VALUE
+  - DATE
+  - DATEVALUE
+  - MONTH
+  - DATEDIF
+  - VLOOKUP
+- PivotTables
+- PivotCharts
+- Bar and Column Charts
+- Pie and Donut Charts
+- Scatter Charts
+- Interactive Slicers
+- Data Cleaning and Transformation
+- Exploratory Data Analysis (EDA)
+- Interactive Dashboard Development
+
+## 10. Project Limitations and Considerations
+
+- The dataset contains multiple hospitalisation records for some customers. Customer-level and hospitalisation-level analyses should be distinguished.
+- Missing values were handled using the specified replacement strategies, which may influence some analytical results.
+- The analysis is based on the available dataset and does not establish causal relationships between patient characteristics and healthcare outcomes.
+- Average healthcare charges can vary due to multiple factors, including medical conditions, hospital tier, and hospitalisation frequency.
+- Age-related trends should be interpreted using the dataset collection date rather than the current date.
+
+## 11. Conclusion
+
+This project demonstrates an end-to-end healthcare data analysis workflow using Microsoft Excel.
+
+Starting with data cleaning and transformation, the project integrates multiple datasets using Customer ID and applies PivotTables, formulas, and visualisations to explore patient health conditions, medical histories, hospitalisation patterns, and healthcare expenses.
+
+The exploratory analysis identifies differences in cancer history, transplant status, weight categories, diabetes status, hospital tiers, and healthcare expenditure across patient groups.
+
+Finally, an interactive dashboard was developed using KPI metrics, charts, and slicers to provide a consolidated view of the key healthcare insights.
+
+The project strengthened practical skills in data preprocessing, Excel functions, data integration, exploratory data analysis, data visualisation, and interactive dashboard development.
